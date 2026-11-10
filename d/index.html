@@ -1,0 +1,125 @@
+<!doctype html>
+<!-- Goes to https://mosaicogames.github.io/d/index.html. The link a player shares lands here:
+     a phone with the game opens that day's challenge, any other goes to Google Play.
+     The day alone tells the game and the difficulty, exactly as Repository.daily() does. -->
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#1a2150">
+<title>Mosaico</title>
+<meta property="og:title" content="Mosaico · Can you beat my time?">
+<meta property="og:description" content="A friend challenged you to today's puzzle. 6 puzzle games in one, free.">
+<style>
+  *{box-sizing:border-box}
+  [hidden]{display:none!important}
+  html,body{height:100%}
+  body{margin:0;overflow:hidden;background:#161c42;color:#fff;font:700 17px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center}
+  .sky{position:fixed;inset:0;background:radial-gradient(120% 80% at 50% 0%,#3a48a0 0%,#232c66 45%,#141a3d 100%)}
+  .rays{position:fixed;left:50%;top:44%;width:220vmax;height:220vmax;margin:-110vmax 0 0 -110vmax;
+    background:repeating-conic-gradient(rgba(255,201,74,.13) 0 9deg,transparent 9deg 18deg);
+    -webkit-mask:radial-gradient(circle,#000 0,transparent 42%);mask:radial-gradient(circle,#000 0,transparent 42%);
+    animation:spin 60s linear infinite}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .bits i{position:fixed;width:26px;height:26px;border-radius:8px;opacity:.5;animation:float 9s ease-in-out infinite;box-shadow:inset 0 -4px 0 rgba(0,0,0,.22)}
+  @keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-22px) rotate(10deg)}}
+  main{position:relative;height:100%;max-width:440px;margin:0 auto;padding:max(22px,env(safe-area-inset-top)) 22px max(22px,env(safe-area-inset-bottom));
+    display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:10px}
+  .logo{display:grid;gap:8px;justify-items:center;animation:drop .7s cubic-bezier(.2,1.4,.4,1) both}
+  .logo b{font-size:32px;font-weight:900;letter-spacing:.24em;margin-right:-.24em}
+  .tiles{display:flex;gap:7px}
+  .tiles i{width:24px;height:24px;border-radius:7px;box-shadow:inset 0 -4px 0 rgba(0,0,0,.22);animation:hop 2.4s ease-in-out infinite}
+  @keyframes hop{0%,70%,100%{transform:none}80%{transform:translateY(-8px)}}
+  @keyframes drop{from{opacity:0;transform:translateY(-40px) scale(.8)}}
+  @keyframes pop{from{opacity:0;transform:scale(.6)}}
+  .mid{display:grid;gap:6px;justify-items:center}
+  .say{font-size:26px;font-weight:900;line-height:1.15;text-shadow:0 3px 0 #c63a26,0 6px 14px rgba(0,0,0,.35);animation:pop .6s .15s cubic-bezier(.2,1.5,.4,1) both}
+  .what{color:#b9c0e8;font-size:15px;animation:pop .6s .25s both}
+  .game{font-size:19px;font-weight:900;animation:pop .6s .3s both}
+  .time{font-size:84px;font-weight:900;line-height:1;margin:6px 0 2px;font-variant-numeric:tabular-nums;text-shadow:0 6px 24px rgba(255,201,74,.45);animation:pop .7s .35s cubic-bezier(.2,1.6,.4,1) both}
+  .time small{font-size:.5em;vertical-align:.25em;margin-right:.12em}
+  .beat{color:#ffd36b;font-size:21px;font-weight:900;animation:pop .6s .5s both}
+  .pill{display:inline-block;margin-top:4px;padding:5px 14px;border-radius:999px;background:rgba(255,255,255,.14);font-size:15px;font-weight:800;animation:pop .6s .45s both}
+  .acts{width:100%;display:grid;gap:12px;animation:pop .6s .6s both}
+  a.btn{display:block;padding:17px 20px;border-radius:999px;color:#fff;text-decoration:none;font-size:20px;font-weight:900;
+    background:linear-gradient(#4fd58c,#2fbf71);box-shadow:0 6px 0 #1f8a50,0 12px 24px rgba(0,0,0,.3);animation:pulse 1.8s ease-in-out infinite}
+  a.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #1f8a50}
+  a.btn.s{background:linear-gradient(#4a5596,#3a4372);box-shadow:0 6px 0 #272e55;animation:none;font-size:17px;padding:14px 20px}
+  @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+  @media (max-height:600px){.time{font-size:64px}.say{font-size:22px}.logo b{font-size:26px}}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+<div class="sky"></div><div class="rays"></div>
+<div class="bits">
+  <i style="left:6%;top:14%;background:#e8503a"></i><i style="right:8%;top:22%;background:#ffb129;animation-delay:-2s"></i>
+  <i style="left:10%;top:62%;background:#3f6df2;animation-delay:-4s"></i><i style="right:6%;top:68%;background:#22b8a6;animation-delay:-6s"></i>
+  <i style="left:46%;top:5%;background:#8b5cf6;animation-delay:-3s;width:18px;height:18px"></i><i style="right:30%;top:84%;background:#2fbf71;animation-delay:-5s;width:18px;height:18px"></i>
+</div>
+<main>
+  <div class="logo"><b>MOSAICO</b>
+    <div class="tiles"><i style="background:#e8503a"></i><i style="background:#ffb129;animation-delay:.1s"></i><i style="background:#3f6df2;animation-delay:.2s"></i><i style="background:#22b8a6;animation-delay:.3s"></i><i style="background:#8b5cf6;animation-delay:.4s"></i><i style="background:#2fbf71;animation-delay:.5s"></i></div>
+  </div>
+  <div class="mid">
+    <div class="say" id="say"></div>
+    <div class="what" id="what"></div>
+    <div class="game" id="game"></div>
+    <div class="time" id="time" hidden></div>
+    <div class="pill" id="hints" hidden></div>
+    <div class="beat" id="beat"></div>
+  </div>
+  <div class="acts">
+    <a class="btn" id="open" href="#"></a>
+    <a class="btn s" id="get" href="https://play.google.com/store/apps/details?id=pt.mosaico.app"></a>
+  </div>
+</main>
+<script>
+  var store = "https://play.google.com/store/apps/details?id=pt.mosaico.app";
+  var q = new URLSearchParams(location.search), v = {}, keep = [];
+  ["d", "t", "h", "f", "n"].forEach(function (k) { var x = q.get(k); if (/^\d{1,6}$/.test(x || "")) { v[k] = +x; keep.push(k + "=" + x); } });
+  // A numbered level also names its game and the language it was played in.
+  ["g", "l"].forEach(function (k) { var x = q.get(k); if (/^[A-Za-z-]{2,12}$/.test(x || "")) { v[k] = x; keep.push(k + "=" + x); } });
+  // say, beat, open, get, daily, games (the app's order), difficulties, level
+  var T = {
+    en: ["A friend challenged you!", "Can you beat it?", "▶  Play the challenge", "Get the game, it's free", "Daily challenge", ["Word Tiles", "Word Search", "Crossword", "Codeword", "Kriss Kross", "Sudoku"], ["Easy", "Medium", "Hard", "Extreme"], "Level"],
+    pt: ["Um amigo desafiou-te!", "Consegues fazer melhor?", "▶  Jogar o desafio", "Instalar o jogo, é grátis", "Desafio do dia", ["Peças de palavras", "Sopa de letras", "Palavras cruzadas", "Palavras codificadas", "Kriss Kross", "Sudoku"], ["Fácil", "Intermédio", "Difícil", "Extremo"], "Nível"],
+    "pt-br": ["Um amigo desafiou você!", "Consegue fazer melhor?", "▶  Jogar o desafio", "Instalar o jogo, é grátis", "Desafio do dia", ["Peças de palavras", "Caça-palavras", "Palavras cruzadas", "Palavras codificadas", "Kriss Kross", "Sudoku"], ["Fácil", "Médio", "Difícil", "Extremo"], "Nível"],
+    es: ["¡Un amigo te ha retado!", "¿Puedes superarlo?", "▶  Jugar el reto", "Instalar el juego, es gratis", "Reto del día", ["Fichas de palabras", "Sopa de letras", "Crucigrama", "Criptograma", "Kriss Kross", "Sudoku"], ["Fácil", "Intermedio", "Difícil", "Extremo"], "Nivel"],
+    de: ["Ein Freund fordert dich heraus!", "Schaffst du es schneller?", "▶  Rätsel spielen", "Spiel installieren, kostenlos", "Tagesrätsel", ["Wortkacheln", "Wortsuche", "Kreuzworträtsel", "Zahlenrätsel", "Kriss Kross", "Sudoku"], ["Leicht", "Mittel", "Schwer", "Extrem"], "Level"],
+    fr: ["Un ami te défie !", "Tu peux faire mieux ?", "▶  Jouer le défi", "Installer le jeu, c'est gratuit", "Défi du jour", ["Tuiles de mots", "Mots mêlés", "Mots croisés", "Mots codés", "Kriss Kross", "Sudoku"], ["Facile", "Moyen", "Difficile", "Extrême"], "Niveau"],
+    tr: ["Bir arkadaşın sana meydan okudu!", "Daha iyisini yapabilir misin?", "▶  Bulmacayı oyna", "Oyunu yükle, ücretsiz", "Günün bulmacası", ["Kelime Taşları", "Kelime Avı", "Çengel Bulmaca", "Şifreli Bulmaca", "Kriss Kross", "Sudoku"], ["Kolay", "Orta", "Zor", "Uzman"], "Seviye"],
+    id: ["Temanmu menantangmu!", "Bisa lebih cepat?", "▶  Mainkan tantangan", "Pasang game, gratis", "Tantangan harian", ["Ubin kata", "Cari kata", "Teka-teki silang", "Kata bersandi", "Kriss Kross", "Sudoku"], ["Mudah", "Sedang", "Sulit", "Ekstrem"], "Level"],
+    hi: ["एक दोस्त ने तुम्हें चुनौती दी है!", "क्या तुम इससे बेहतर कर सकते हो?", "▶  चुनौती खेलो", "गेम इंस्टॉल करो, मुफ़्त है", "आज की चुनौती", ["शब्द टाइलें", "शब्द खोज", "वर्ग पहेली", "कूट शब्द", "क्रिस क्रॉस", "सुडोकू"], ["आसान", "मध्यम", "कठिन", "अति कठिन"], "स्तर"]
+  };
+  var lang = (navigator.language || "en").toLowerCase();
+  var t = T[lang] || T[lang.slice(0, 2)] || T.en;
+  function put(id, s) { document.getElementById(id).textContent = s; }
+  put("say", t[0]); put("beat", t[1]); put("open", t[2]); put("get", t[3]);
+  document.documentElement.lang = lang.slice(0, 2);
+  var ids = ["wordtiles", "wordsearch", "crossword", "codeword", "krisskross", "sudoku"];
+  var level = v.t && v.n && v.f != null && v.f < 4 && ids.indexOf(v.g) >= 0;
+  if (level) {
+    put("what", t[7] + " " + v.n);
+    put("game", t[5][ids.indexOf(v.g)] + " · " + t[6][v.f]);
+    var time2 = document.getElementById("time");
+    time2.innerHTML = "<small>⏱️</small>" + Math.floor(v.t / 60) + ":" + ("0" + v.t % 60).slice(-2);
+    time2.hidden = false;
+  } else if (v.d && v.t) {
+    // Same rule as the game: the weekday sets the difficulty (day 0 was a Thursday), the day number the game.
+    var w = (v.d + 3) % 7, diff = w < 2 ? 0 : w < 5 ? 1 : 2, date = "";
+    try { date = new Date(v.d * 864e5).toLocaleDateString(lang, { day: "numeric", month: "short", timeZone: "UTC" }); } catch (e) {}
+    put("what", t[4] + (date ? " · " + date : ""));
+    put("game", t[5][v.d % 6] + " · " + t[6][diff]);
+    var time = document.getElementById("time");
+    time.innerHTML = "<small>⏱️</small>" + Math.floor(v.t / 60) + ":" + ("0" + v.t % 60).slice(-2);
+    time.hidden = false;
+    if (v.h != null) { put("hints", "💡 " + v.h); document.getElementById("hints").hidden = false; }
+  }
+  var open = document.getElementById("open");
+  if (/Android/i.test(navigator.userAgent) && (level || (v.d && v.t))) {
+    var app = "intent://d?" + keep.join("&") + "#Intent;scheme=mosaico;package=pt.mosaico.app;S.browser_fallback_url=" + encodeURIComponent(store) + ";end";
+    open.href = app;
+    document.getElementById("get").hidden = true;
+    // Straight into the game when the browser allows it; the button stays for when it does not.
+    setTimeout(function () { location.href = app; }, 900);
+  } else { open.hidden = true; document.getElementById("get").className = "btn"; }
+</script>
+</html>
